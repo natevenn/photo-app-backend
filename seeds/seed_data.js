@@ -5,13 +5,13 @@ exports.seed = (knex, Promise) => {
   return knex.transaction(function (t) {
     return knex('images')
     .del()
-    .then(function() {
+    .then(function(t) {
       return knex('collections').
         del()
-    }).then(function() {
+    }).then(function(t) {
       return knex('users').
         del()
-    }).then(function() {
+    }).then(function(t) {
       return knex('users')
       .transacting(t)
       .insert(users)
