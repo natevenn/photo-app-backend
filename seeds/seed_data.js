@@ -27,5 +27,11 @@ exports.seed = (knex, Promise) => {
     .then(t.commit)
     .catch(t.rollback)
   })
+  .then(function(res) {
+    console.log('Seeding complete')
+  })
+  .catch(function(err) {
+    console.error(err)
+  })
 };
 
