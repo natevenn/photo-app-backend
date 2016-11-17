@@ -11,6 +11,7 @@ router.post('/', (req, res, next) => {
       return res.json({errorMessage: 'Username already exists'})
     } else {
       if(user.username !== undefined && user.password !== undefined) {
+        //hash password with bcrypt before saving
         db('users').insert(user)
         .then( () => {
           //return JWT
