@@ -5,7 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var db = require('./db/knex.js');
-var signup = require('./routes/api/v1/signup');
+var images = require('./routes/images/index.js');
+var createUser = require('./routes/users/create.js');
 
 
 var app = express();
@@ -25,7 +26,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/v1/signup', signup);
+app.use('/api/v1/signup', createUser);
+app.use('/api/v1/', images);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
