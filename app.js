@@ -1,3 +1,4 @@
+require('dotenv').config();
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -7,8 +8,6 @@ var bodyParser = require('body-parser');
 var db = require('./db/knex.js');
 var images = require('./routes/images/index.js');
 var createUser = require('./routes/users/create.js');
-
-
 var app = express();
 
 // view engine setup

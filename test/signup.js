@@ -3,6 +3,7 @@ let request = require('supertest');
 let assert = require('assert');
 let db = app.get('db');
 let jwt = require('jsonwebtoken');
+let secret = process.env.SECRET;
 
 describe('signin', () => {
 
@@ -51,7 +52,7 @@ describe('signin', () => {
       password: 'password'
     }
 
-    let userToken = jwt.sign({uid: 1}, 'Lipnice in the spring');
+    let userToken = jwt.sign({uid: 1}, secret);
 
     request(app)
     .post('/api/v1/signup')
