@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var User = require('../../models/user.js')
 
 router.post('/', (req, res, next) => {
   var db = req.app.get('db')
@@ -11,20 +12,14 @@ router.post('/', (req, res, next) => {
       if(existingUser[0]) {
         return res.json({errorMessage: 'Username already exists'})
       } else {
-        //hash password with bcrypt before saving
-        db('users').insert(user)
-        .then( () => {
-          //generate JWT
-          //return JWT
-          return res.json()
-        });
+        return User.create(res, user);
       }
     });
-    }else{
-      var err = new Error('Not found');
-      err.status = 400;
-      next(err);
-    }
-  });
+  }else{
+    var err = new Error('Not found');
+    err.status = 400;
+    next(err);
+  }
+});
 
   module.exports = router;
