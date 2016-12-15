@@ -10,9 +10,9 @@ router.post('/', (req, res, next) => {
     db('users').where({username: user.username})
     .then( (existingUser) => {
       if(existingUser[0]) {
-        return res.json({errorMessage: 'Username already exists'})
+        res.json({errorMessage: 'Username already exists'})
       } else {
-        return User.create(res, user);
+        User.create(res, user)
       }
     });
   }else{

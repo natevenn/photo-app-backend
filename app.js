@@ -1,5 +1,6 @@
 require('dotenv').config();
 var express = require('express');
+var cors = require('cors');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -8,6 +9,7 @@ var bodyParser = require('body-parser');
 var db = require('./db/knex.js');
 var images = require('./routes/images/index.js');
 var createUser = require('./routes/users/create.js');
+var login = require('./routes/login.js');
 var app = express();
 
 // view engine setup
@@ -20,12 +22,14 @@ app.set('db', db);
 //if(process.env.NODE_ENV !== 'test') {
 app.use(logger('dev'));
 //}
+app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/v1/signup', createUser);
+app.use('/api/v1/login', login);
 app.use('/api/v1/', images);
 
 // catch 404 and forward to error handler
