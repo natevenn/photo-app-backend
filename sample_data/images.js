@@ -1,26 +1,26 @@
 module.exports = [
     {
-      imageUrl: "image 1",
+      imageUrl: "people image",
       collection_id: 1,
       user_id: 1
     },
     {
-      imageUrl: "image 2",
+      imageUrl: "places image",
       collection_id: 2,
       user_id: 1
     },
     {
-      imageUrl: "image 3",
+      imageUrl: "art image",
       collection_id: 3,
       user_id: 1
     },
     {
-      imageUrl: "image 4",
+      imageUrl: "life image",
       collection_id: 4,
       user_id: 1
     },
     {
-      imageUrl: "image 5",
+      imageUrl: "Crested Butte image",
       collection_id: 5,
       user_id: 1
     },

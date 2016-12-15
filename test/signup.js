@@ -2,6 +2,8 @@ let app = require('../app');
 let request = require('supertest');
 let assert = require('assert');
 let db = app.get('db');
+let jwt = require('jsonwebtoken');
+let secret = process.env.SECRET;
 
 describe('signin', () => {
 
@@ -50,15 +52,19 @@ describe('signin', () => {
       password: 'password'
     }
 
+    let userToken = jwt.sign({uid: 1}, secret);
+
     request(app)
     .post('/api/v1/signup')
     .send(user)
     .end( (err, res) => {
       assert.equal(res.statusCode, 200);
+      assert.equal(res.body.token, userToken);
 
       db('users').returning('*').then( (users) => {
         assert.equal(users[0].username, user.username);
-        assert.equal(users[0].password, user.password);
+        assert.notEqual(users[0].username, user.password);
+        assert(true, user.password);
       });
       done();
     });
