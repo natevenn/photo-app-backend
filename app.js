@@ -8,8 +8,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var db = require('./db/knex.js');
 var images = require('./routes/images/index.js');
-var createUser = require('./routes/users/create.js');
-var login = require('./routes/login.js');
+var createUser = require('./routes/users/signup.js');
+var login = require('./routes/users/login.js');
 var app = express();
 
 // view engine setup

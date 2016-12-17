@@ -17,9 +17,23 @@ describe('login', () => {
     });
   });
 
-  it('should return true if user exists', (done) => {
+  it('should return status 400 if user attribute missing', (done) => {
     let user = {
-      username: 'natevenn',
+      username: 'nate'
+    }
+
+    request(app)
+    .post('/api/v1/login')
+    .send(user)
+    .end( (err, res) => {
+      assert.equal(res.statusCode, 400);
+      done();
+    });
+  });
+
+  it('should return error message if username does not exisit', (done) => {
+    let user = {
+      username: 'notauser',
       password: 'password'
     }
 
@@ -27,7 +41,42 @@ describe('login', () => {
     .post('/api/v1/login')
     .send(user)
     .end( (err, res) => {
+      assert.equal(res.body.errorMessage, "Invalid username or password")
+      done();
+    });
+  });
+
+  it('should return error message if password does not match user password', (done) => {
+    let user = {
+      username: 'natevenn',
+      password: 'differentpassword'
+    }
+
+    request(app)
+    .post('/api/v1/login')
+    .send(user)
+    .end( (err, res) => {
+      assert.equal(res.body.errorMessage, "Invalid username or password")
+      done();
+    });
+  });
+
+
+  it('should return JWT and username if user exists and authenticated', (done) => {
+    let user = {
+      username: 'natevenn',
+      password: 'password'
+    }
+
+    let userToken = jwt.sign({uid: 2}, secret);
+
+    request(app)
+    .post('/api/v1/login')
+    .send(user)
+    .end( (err, res) => {
       assert.equal(res.statusCode, 200);
+      assert.equal(res.body.username, 'natevenn');
+      assert.equal(res.body.token, userToken)
       done();
     });
   });

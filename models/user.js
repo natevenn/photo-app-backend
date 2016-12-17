@@ -25,31 +25,20 @@ function hashPassword(password) {
   return bcrypt.hashSync(password, 10);
 }
 
-function exists(username, password) {
-  db('users').where('username', username)
-  .then( (user) => {
-    if(user.length > 0) {
-      var username = user[0].username
-      var hash = user[0].password
-      var result = authenticate(password, hash)
-      console.log('authenticated', result)
-      if(authenticate(password, hash)){
-      }
+function authenticate(res, password, user) {
+  var hash = user.password
+  bcrypt.compare(password, hash, (error, response) => {
+    if(response === true){
+      var jwt = generateJWT(user.id)
+      res.json({token: jwt, username: user.username, uid: user.id})
     }else{
-      //res.json(errorMessage: "invalid username or password")
+      res.json({errorMessage: 'Invalid username or password'})
     }
-  });
-}
-
-function authenticate(password, hash) {
- bcrypt.compare(password, hash, (err, res) => {
-    console.log('res', res)
   })
 }
 
 
 module.exports = {
   create: create,
-  authenticate: authenticate,
-  exists: exists
+  authenticate: authenticate
 }
