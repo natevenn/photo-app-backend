@@ -37,8 +37,7 @@ function authenticate(res, password, user) {
   })
 }
 
-
-function getUserId(db, imgObj, username) {
+function getUserId(imgObj, username) {
   return db('users').where({username: username})
   .select('id')
   .then( (id) => {
