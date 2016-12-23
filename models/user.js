@@ -38,7 +38,18 @@ function authenticate(res, password, user) {
 }
 
 
+function getUserId(db, imgObj, username) {
+  return db('users').where({username: username})
+  .select('id')
+  .then( (id) => {
+    var user_id = id[0].id
+    imgObj.user_id = user_id
+    return imgObj
+  });
+}
+
 module.exports = {
   create: create,
-  authenticate: authenticate
+  authenticate: authenticate,
+  getUserId: getUserId
 }

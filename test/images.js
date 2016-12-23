@@ -40,3 +40,32 @@ describe('GET /images', () => {
   });
 });
 
+describe('POST /images', () => {
+  before((done) => {
+    db.migrate.rollback().then(() => {
+      db.migrate.latest().then(() => {
+        db.seed.run().then(() => {
+        done();
+        });
+      });
+    });
+  });
+
+  it('should return the image', (done) => {
+    let data = {
+      username: 'natevenn',
+      collection: 'life',
+      url: 'some url'
+    }
+    request(app)
+    .post('/api/v1/images')
+    .send(data)
+    .end( (err, res) => {
+      var image = res.body
+      assert.deepEqual(image, {'imageUrl': 'some url'})
+     done();
+    });
+  });
+
+});
+

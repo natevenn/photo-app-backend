@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/:username/:collection/images', (req, res, next) => {
+router.get('/images', (req, res, next) => {
   var db = req.app.get('db');
   var username = req.params.username
   var collection = req.params.collection
