@@ -2,6 +2,8 @@ let app = require('../app');
 let request = require('supertest');
 let assert = require('assert');
 let db = app.get('db');
+let jwt = require('jsonwebtoken')
+let secret = process.env.SECRET
 
 describe('GET /images', () => {
 
@@ -21,7 +23,7 @@ describe('GET /images', () => {
     .expect('Content-Type', /json/)
     .expect(200)
     .end( (err, res) => {
-      var image = res.body[0]
+      let image = res.body[0]
       assert.deepEqual(image, {'imageUrl': 'people image'})
       done();
     })
@@ -33,7 +35,7 @@ describe('GET /images', () => {
     .expect('Content-Type', /json/)
     .expect(200)
     .end( (err, res) => {
-      var image = res.body[0]
+      let image = res.body[0]
       assert.deepEqual(image, {'imageUrl': 'places image'})
       done();
     })
@@ -52,16 +54,19 @@ describe('POST /images', () => {
   });
 
   it('should return the image', (done) => {
+    let token = jwt.sign({uid: 1} , secret);
     let data = {
       username: 'natevenn',
       collection: 'life',
-      url: 'some url'
+      url: 'some url',
+      token: token
     }
+
     request(app)
     .post('/api/v1/images')
     .send(data)
     .end( (err, res) => {
-      var image = res.body
+      let image = res.body
       assert.deepEqual(image, {'imageUrl': 'some url'})
      done();
     });

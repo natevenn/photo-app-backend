@@ -3,6 +3,8 @@ var router = express.Router();
 var User = require('../models/user.js');
 var Collection = require('../models/collection.js');
 var Image = require('../models/image.js');
+var jwt = require('jsonwebtoken');
+var secret = process.env.SECRET;
 
 router.get('/:username/:collection/images', (req, res, next) => {
   var db = req.app.get('db');
@@ -21,6 +23,7 @@ router.get('/:username/:collection/images', (req, res, next) => {
 });
 
 router.post('/images', (req, res, next) => {
+  var token = req.body.token
   var username = req.body.username
   var collectionName = req.body.collection
   var url = req.body.url
@@ -28,9 +31,18 @@ router.post('/images', (req, res, next) => {
     imageUrl: url
   }
 
-  User.getUserId(newImage, username)
-  .then(function(imgObj) { return Collection.getCollectionId(imgObj, collectionName) })
-  .then(function(imgObj) { return Image.create(res, imgObj) })
+  if(token) {
+
+    jwt.verify(token, secret, function(err, decoded) {
+      if(err) {
+        return res.json({ success: false, message: "Failed to authenticate" });
+      }else{
+        User.getUserId(newImage, username)
+        .then(function(imgObj) { return Collection.getCollectionId(imgObj, collectionName) })
+        .then(function(imgObj) { return Image.create(res, imgObj) })
+      }
+    });
+  }
 });
 
 module.exports = router;
