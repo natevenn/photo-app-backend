@@ -7,9 +7,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var db = require('./db/knex.js');
-var images = require('./routes/images/index.js');
-var createUser = require('./routes/users/create.js');
-var login = require('./routes/login.js');
+var images = require('./routes/images.js');
+var signup = require('./routes/users/signup.js');
+var login = require('./routes/users/login.js');
 var app = express();
 
 // view engine setup
@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/v1/signup', createUser);
+app.use('/api/v1/signup', signup);
 app.use('/api/v1/login', login);
 app.use('/api/v1/', images);
 
