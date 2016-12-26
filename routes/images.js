@@ -11,7 +11,7 @@ router.get('/:username/:collection/images', (req, res, next) => {
   var username = req.params.username
   var collection = req.params.collection
 
-  db.select('imageUrl')
+  db.select('images.id', 'imageUrl')
   .from('images')
   .join('collections', {'collections.id': 'images.collection_id'})
   .join('users', {'users.id': 'images.user_id'})
@@ -43,6 +43,11 @@ router.post('/images', (req, res, next) => {
       }
     });
   }
+});
+
+router.delete('/images/:id', (req, res, next) => {
+  var imageId = req.params.id
+  Image.deleteImage(res, imageId)
 });
 
 module.exports = router;
