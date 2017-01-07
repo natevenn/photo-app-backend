@@ -86,9 +86,13 @@ describe('DELETE /images/:id', () => {
 
   it('should delete image from image table', (done) => {
     let token = jwt.sign({uid: 1}, secret);
+    let data = {
+      token: token
+    }
 
     request(app)
     .del('/api/v1/images/1')
+    .send(data)
     .end( (err, res) => {
       assert.deepEqual(res.body, 'Image id 1 was deleted')
       done();
