@@ -47,7 +47,17 @@ router.post('/images', (req, res, next) => {
 
 router.delete('/images/:id', (req, res, next) => {
   var imageId = req.params.id
-  Image.deleteImage(res, imageId)
+  var token = req.body.token
+
+  if(token) {
+    jwt.verify(token, secret, function(err, decoded) {
+      if(err) {
+        return res.json({ success: false, message: "Failed to authenticate" });
+      }else{
+        Image.deleteImage(res, imageId)
+      }
+    });
+  }
 });
 
 module.exports = router;
